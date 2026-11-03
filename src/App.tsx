@@ -25,6 +25,9 @@ import SummaryCard from "./components/dashboard/SummaryCard";
 import Sidebar, {
   type NavigationItem,
 } from "./components/Sidebar";
+import RecentActivity, {
+  type Transaction,
+} from "./components/dashboard/RecentActivity";
 
 
 const theme = createTheme({
@@ -83,6 +86,33 @@ const formatCurrency = (amount: number) =>
 
 function App() {
   const [activePage, setActivePage] = useState("Dashboard");
+
+  const recentTransactions: Transaction[] = [
+  {
+    id: 1,
+    title: "Monthly salary",
+    category: "Income",
+    date: "Oct 01",
+    amount: 85000,
+    type: "income",
+  },
+  {
+    id: 2,
+    title: "Groceries",
+    category: "Food",
+    date: "Oct 05",
+    amount: 2450,
+    type: "expense",
+  },
+  {
+    id: 3,
+    title: "Electricity bill",
+    category: "Utilities",
+    date: "Oct 08",
+    amount: 1800,
+    type: "expense",
+  },
+];
   return (
     <ThemeProvider theme={theme}>
       <CssBaseline />
@@ -185,61 +215,7 @@ function App() {
               </CardContent>
             </Card>
 
-            <Card className="panel-card">
-              <CardContent>
-                <Typography variant="h6" sx={{ fontWeight: 700 }}>
-                  Recent activity
-                </Typography>
-                <Typography sx={{ color: 'text.secondary', mt: 0.5 }} variant="body2">
-                  Example transactions
-                </Typography>
-
-                <Box className="activity-row">
-                  <Box className="activity-icon income-icon">
-                    <TrendingUp />
-                  </Box>
-                  <Box sx-={{ flex: 1 }}>
-                    <Typography sx={{ fontWeight: 600 }}>Monthly salary</Typography>
-                    <Typography variant="caption" color="text.secondary">
-                      Income · Oct 01
-                    </Typography>
-                  </Box>
-                  <Typography color="#34d399" sx={{ fontWeight: 700 }}>
-                    +₹85,000
-                  </Typography>
-                </Box>
-
-                <Divider sx={{ borderColor: "divider" }} />
-
-                <Box className="activity-row">
-                  <Box className="activity-icon expense-icon">
-                    <ReceiptLong />
-                  </Box>
-                  <Box sx-={{ flex: 1 }}>
-                    <Typography sx={{ fontWeight: 600 }}>Groceries</Typography>
-                    <Typography variant="caption" color="text.secondary">
-                      Food · Oct 05
-                    </Typography>
-                  </Box>
-                  <Typography sx={{ fontWeight: 700 }}>−₹2,450</Typography>
-                </Box>
-
-                <Divider sx={{ borderColor: "divider" }} />
-
-                <Box className="activity-row">
-                  <Box className="activity-icon expense-icon">
-                    <ReceiptLong />
-                  </Box>
-                  <Box sx-={{ flex: 1 }}>
-                    <Typography sx={{ fontWeight: 600 }}>Electricity bill</Typography>
-                    <Typography variant="caption" color="text.secondary">
-                      Utilities · Oct 08
-                    </Typography>
-                  </Box>
-                  <Typography sx={{ fontWeight: 700 }}>−₹1,800</Typography>
-                </Box>
-              </CardContent>
-            </Card>
+            <RecentActivity transactions={recentTransactions} />
           </Box>
 
           <Typography className="footer-note">
