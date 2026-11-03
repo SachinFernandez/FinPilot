@@ -24,6 +24,8 @@ import {
   Typography,
   createTheme,
 } from "@mui/material";
+import SummaryCard from "./components/dashboard/SummaryCard";
+
 
 const theme = createTheme({
   palette: {
@@ -153,31 +155,14 @@ function App() {
 
           <Box className="summary-grid">
             {summaryCards.map((item) => (
-              <Card className="summary-card" key={item.label}>
-                <CardContent>
-                  <Box className="card-title-row">
-                    <Typography color="text.secondary" variant="body2">
-                      {item.label}
-                    </Typography>
-                    <Box
-                      className="card-icon"
-                      sx={{ color: item.color }}
-                    >
-                      {item.icon}
-                    </Box>
-                  </Box>
-
-                  <Typography variant="h4" sx={{fontWeight: 750, mt: 2}}>
-                    {formatCurrency(item.amount)}
-                  </Typography>
-
-                  <Typography
-                    variant="body2" sx={{ color:"text.secondary", mt: 1}}
-                  >
-                    {item.note}
-                  </Typography>
-                </CardContent>
-              </Card>
+              <SummaryCard
+                key={item.label}
+                label={item.label}
+                amount={formatCurrency(item.amount)}
+                icon={item.icon}
+                color={item.color}
+                note={item.note}
+              />
             ))}
           </Box>
 
@@ -239,7 +224,7 @@ function App() {
                   <Box className="activity-icon income-icon">
                     <TrendingUp />
                   </Box>
-                  <Box sx-={{ flex: 1}}>
+                  <Box sx-={{ flex: 1 }}>
                     <Typography sx={{ fontWeight:600 }}>Monthly salary</Typography>
                     <Typography variant="caption" color="text.secondary">
                       Income · Oct 01
