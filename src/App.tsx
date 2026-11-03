@@ -1,3 +1,4 @@
+import { useState } from "react";
 import "./App.css";
 import {
   AccountBalanceWallet,
@@ -16,15 +17,14 @@ import {
   Chip,
   CssBaseline,
   Divider,
-  List,
-  ListItemButton,
-  ListItemIcon,
-  ListItemText,
   ThemeProvider,
   Typography,
   createTheme,
 } from "@mui/material";
 import SummaryCard from "./components/dashboard/SummaryCard";
+import Sidebar, {
+  type NavigationItem,
+} from "./components/Sidebar";
 
 
 const theme = createTheme({
@@ -42,12 +42,12 @@ const theme = createTheme({
   shape: { borderRadius: 14 },
 });
 
-const navigation = [
-  { label: "Dashboard", icon: <Dashboard />, active: true },
-  { label: "Transactions", icon: <ReceiptLong />, active: false },
-  { label: "Budgets", icon: <AccountBalanceWallet />, active: false },
-  { label: "Reports", icon: <Assessment />, active: false },
-  { label: "Settings", icon: <Settings />, active: false },
+const navigation: NavigationItem[] = [
+  { label: "Dashboard", icon: <Dashboard /> },
+  { label: "Transactions", icon: <ReceiptLong /> },
+  { label: "Budgets", icon: <AccountBalanceWallet /> },
+  { label: "Reports", icon: <Assessment /> },
+  { label: "Settings", icon: <Settings /> },
 ];
 
 const summaryCards = [
@@ -82,42 +82,16 @@ const formatCurrency = (amount: number) =>
   }).format(amount);
 
 function App() {
+  const [activePage, setActivePage] = useState("Dashboard");
   return (
     <ThemeProvider theme={theme}>
       <CssBaseline />
       <Box className="app-shell">
-        <Box component="aside" className="sidebar">
-          <Box className="brand">
-            <Box className="brand-mark">F</Box>
-            <Typography variant="h6" sx={{ fontWeight: 800 }}>
-              FinPilot
-            </Typography>
-          </Box>
-
-          <Typography className="nav-caption">
-            WORKSPACE
-          </Typography>
-
-          <List className="navigation">
-            {navigation.map((item) => (
-              <ListItemButton
-                key={item.label}
-                selected={item.active}
-                className="nav-item"
-              >
-                <ListItemIcon>{item.icon}</ListItemIcon>
-                <ListItemText primary={item.label} />
-              </ListItemButton>
-            ))}
-          </List>
-
-          <Box className="sidebar-footer">
-            <Typography variant="body2">Personal workspace</Typography>
-            <Typography variant="caption" color="text.secondary">
-              Your money, in focus.
-            </Typography>
-          </Box>
-        </Box>
+        <Sidebar
+          items={navigation}
+          activeItem={activePage}
+          onNavigate={setActivePage}
+        />
 
         <Box component="main" className="main-content">
           <Box className="topbar">
@@ -136,7 +110,7 @@ function App() {
           </Box>
 
           <Box className="welcome-section">
-            <Typography variant="h4" sx={{ fontWeight:800 }}>
+            <Typography variant="h4" sx={{ fontWeight: 800 }}>
               Your finances, simplified.
             </Typography>
             <Typography color="text.secondary" sx={{ fontWeight: 750, mt: 1 }}>
@@ -145,7 +119,7 @@ function App() {
           </Box>
 
           <Box className="section-heading">
-            <Typography variant="h6" sx={{ fontWeight:700 }}>
+            <Typography variant="h6" sx={{ fontWeight: 700 }}>
               Monthly summary
             </Typography>
             <Typography variant="body2" color="text.secondary">
@@ -169,7 +143,7 @@ function App() {
           <Box className="lower-grid">
             <Card className="panel-card">
               <CardContent>
-                <Typography variant="h6" sx={{ fontWeight:700 }}>
+                <Typography variant="h6" sx={{ fontWeight: 700 }}>
                   Savings snapshot
                 </Typography>
                 <Typography sx={{ color: "text.secondary", mt: 0.5 }}>
@@ -213,10 +187,10 @@ function App() {
 
             <Card className="panel-card">
               <CardContent>
-                <Typography variant="h6" sx={{ fontWeight:700 }}>
+                <Typography variant="h6" sx={{ fontWeight: 700 }}>
                   Recent activity
                 </Typography>
-                <Typography sx={{ color: 'text.secondary', mt: 0.5}} variant="body2">
+                <Typography sx={{ color: 'text.secondary', mt: 0.5 }} variant="body2">
                   Example transactions
                 </Typography>
 
@@ -225,12 +199,12 @@ function App() {
                     <TrendingUp />
                   </Box>
                   <Box sx-={{ flex: 1 }}>
-                    <Typography sx={{ fontWeight:600 }}>Monthly salary</Typography>
+                    <Typography sx={{ fontWeight: 600 }}>Monthly salary</Typography>
                     <Typography variant="caption" color="text.secondary">
                       Income · Oct 01
                     </Typography>
                   </Box>
-                  <Typography color="#34d399" sx={{ fontWeight:700 }}>
+                  <Typography color="#34d399" sx={{ fontWeight: 700 }}>
                     +₹85,000
                   </Typography>
                 </Box>
@@ -241,13 +215,13 @@ function App() {
                   <Box className="activity-icon expense-icon">
                     <ReceiptLong />
                   </Box>
-                  <Box sx-={{ flex: 1}}>
-                    <Typography sx={{ fontWeight:600 }}>Groceries</Typography>
+                  <Box sx-={{ flex: 1 }}>
+                    <Typography sx={{ fontWeight: 600 }}>Groceries</Typography>
                     <Typography variant="caption" color="text.secondary">
                       Food · Oct 05
                     </Typography>
                   </Box>
-                  <Typography sx={{ fontWeight:700 }}>−₹2,450</Typography>
+                  <Typography sx={{ fontWeight: 700 }}>−₹2,450</Typography>
                 </Box>
 
                 <Divider sx={{ borderColor: "divider" }} />
@@ -256,13 +230,13 @@ function App() {
                   <Box className="activity-icon expense-icon">
                     <ReceiptLong />
                   </Box>
-                  <Box sx-={{ flex: 1}}>
-                    <Typography sx={{ fontWeight:600 }}>Electricity bill</Typography>
+                  <Box sx-={{ flex: 1 }}>
+                    <Typography sx={{ fontWeight: 600 }}>Electricity bill</Typography>
                     <Typography variant="caption" color="text.secondary">
                       Utilities · Oct 08
                     </Typography>
                   </Box>
-                  <Typography sx={{ fontWeight:700 }}>−₹1,800</Typography>
+                  <Typography sx={{ fontWeight: 700 }}>−₹1,800</Typography>
                 </Box>
               </CardContent>
             </Card>
