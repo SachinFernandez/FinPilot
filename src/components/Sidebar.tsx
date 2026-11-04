@@ -1,65 +1,70 @@
 
 import type { ReactNode } from "react";
-
+import { NavLink, useLocation } from "react-router-dom";
 import {
-    Box,
-    List,
-    ListItemButton,
-    ListItemIcon,
-    ListItemText,
-    Typography,
+  Box,
+  List,
+  ListItemButton,
+  ListItemIcon,
+  ListItemText,
+  Typography,
 } from "@mui/material";
 
 export interface NavigationItem {
-    label: string;
-    icon: ReactNode;
+  label: string;
+  icon: ReactNode;
+  path: string;
 }
 
 interface SidebarProps {
-    items: NavigationItem[];
-    activeItem: string;
-    onNavigate: (label: string) => void;
+  items: NavigationItem[];
 }
 
-function Sidebar({ items, activeItem, onNavigate }: SidebarProps) {
-    return (
-        <Box component="aside" className="sidebar">
-            <Box className="brand">
-                <Box className="brand-mark">F</Box>
-                <Typography variant="h6" sx={{ fontWeight: 800 }}>
-                    FinPilot
-                </Typography>
-            </Box>
+function Sidebar({ items }: SidebarProps) {
+  const location = useLocation();
 
-            <Typography className="nav-caption">
-                WORKSPACE
-            </Typography>
+  return (
+    <Box component="aside" className="sidebar">
+      <Box className="brand">
+        <Box className="brand-mark">F</Box>
+        <Typography variant="h6" sx={{ fontWeight: 800 }}>
+          FinPilot
+        </Typography>
+      </Box>
 
-            <List className="navigation">
-                {items.map((item) => (
-                    <ListItemButton
-                        key={item.label}
-                        selected={activeItem === item.label}
-                        onClick={() => onNavigate(item.label)}
-                        className="nav-item"
-                    >
-                        <ListItemIcon>{item.icon}</ListItemIcon>
-                        <ListItemText primary={item.label} />
-                    </ListItemButton>
-                ))}
-            </List>
+      <Typography className="nav-caption">
+        WORKSPACE
+      </Typography>
 
-            <Box className="sidebar-footer">
-                <Typography variant="body2">
-                    Personal workspace
-                </Typography>
+      <List className="navigation">
+        {items.map((item) => (
+          <NavLink
+            key={item.path}
+            to={item.path}
+            end={item.path === "/"}
+            style={{ textDecoration: "none", color: "inherit" }}
+          >
+            <ListItemButton
+              selected={location.pathname === item.path}
+              className="nav-item"
+            >
+              <ListItemIcon>{item.icon}</ListItemIcon>
+              <ListItemText primary={item.label} />
+            </ListItemButton>
+          </NavLink>
+        ))}
+      </List>
 
-                <Typography variant="caption" color="text.secondary">
-                    Your money, in focus.
-                </Typography>
-            </Box>
-        </Box>
-    );
+      <Box className="sidebar-footer">
+        <Typography variant="body2">
+          Personal workspace
+        </Typography>
+        <Typography variant="caption" color="text.secondary">
+          Your money, in focus.
+        </Typography>
+      </Box>
+    </Box>
+  );
 }
 
 export default Sidebar;

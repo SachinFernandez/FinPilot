@@ -1,34 +1,14 @@
-import { useState } from "react";
 import "./App.css";
-import {
-  AccountBalanceWallet,
-  Assessment,
-  AutoGraph,
-  Dashboard,
-  ReceiptLong,
-  Settings,
-  TrendingDown,
-  TrendingUp,
-} from "@mui/icons-material";
-import {
-  Box,
-  Card,
-  CardContent,
-  Chip,
-  CssBaseline,
-  Divider,
-  ThemeProvider,
-  Typography,
-  createTheme,
-} from "@mui/material";
-import SummaryCard from "./components/dashboard/SummaryCard";
-import Sidebar, {
-  type NavigationItem,
-} from "./components/Sidebar";
-import RecentActivity, {
-  type Transaction,
-} from "./components/dashboard/RecentActivity";
 
+import { Box, CssBaseline, ThemeProvider, createTheme } from "@mui/material";
+import { Navigate, Route, Routes } from "react-router-dom";
+
+import AppLayout from "./components/AppLayout";
+import Dashboard from "./pages/Dashboard";
+import Transactions from "./pages/Transactions";
+import Budgets from "./pages/Budgets";
+import Reports from "./pages/Reports";
+import Settings from "./pages/Settings";
 
 const theme = createTheme({
   palette: {
@@ -45,183 +25,23 @@ const theme = createTheme({
   shape: { borderRadius: 14 },
 });
 
-const navigation: NavigationItem[] = [
-  { label: "Dashboard", icon: <Dashboard /> },
-  { label: "Transactions", icon: <ReceiptLong /> },
-  { label: "Budgets", icon: <AccountBalanceWallet /> },
-  { label: "Reports", icon: <Assessment /> },
-  { label: "Settings", icon: <Settings /> },
-];
-
-const summaryCards = [
-  {
-    label: "Total Income",
-    amount: 85000,
-    icon: <TrendingUp />,
-    color: "#60a5fa",
-    note: "Money received this month",
-  },
-  {
-    label: "Total Expenses",
-    amount: 32500,
-    icon: <TrendingDown />,
-    color: "#f472b6",
-    note: "Money spent this month",
-  },
-  {
-    label: "Net Cash Flow",
-    amount: 52500,
-    icon: <AutoGraph />,
-    color: "#34d399",
-    note: "Income minus expenses",
-  },
-];
-
-const formatCurrency = (amount: number) =>
-  new Intl.NumberFormat("en-IN", {
-    style: "currency",
-    currency: "INR",
-    maximumFractionDigits: 0,
-  }).format(amount);
-
 function App() {
-  const [activePage, setActivePage] = useState("Dashboard");
-
-  const recentTransactions: Transaction[] = [
-  {
-    id: 1,
-    title: "Monthly salary",
-    category: "Income",
-    date: "Oct 01",
-    amount: 85000,
-    type: "income",
-  },
-  {
-    id: 2,
-    title: "Groceries",
-    category: "Food",
-    date: "Oct 05",
-    amount: 2450,
-    type: "expense",
-  },
-  {
-    id: 3,
-    title: "Electricity bill",
-    category: "Utilities",
-    date: "Oct 08",
-    amount: 1800,
-    type: "expense",
-  },
-];
   return (
     <ThemeProvider theme={theme}>
       <CssBaseline />
-      <Box className="app-shell">
-        <Sidebar
-          items={navigation}
-          activeItem={activePage}
-          onNavigate={setActivePage}
-        />
 
-        <Box component="main" className="main-content">
-          <Box className="topbar">
-            <Box>
-              <Typography variant="body2" color="text.secondary">
-                Personal Finance / Overview
-              </Typography>
-              <Typography
-                variant="h5"
-                sx={{ fontWeight: 750, mt: 0.5 }}
-              >
-                Financial overview
-              </Typography>
-            </Box>
-            <Chip label="October 2026" color="primary" variant="outlined" />
-          </Box>
+      <Box>
+        <Routes>
+          <Route path="/" element={<AppLayout />}>
+            <Route index element={<Dashboard />} />
+            <Route path="transactions" element={<Transactions />} />
+            <Route path="budgets" element={<Budgets />} />
+            <Route path="reports" element={<Reports />} />
+            <Route path="settings" element={<Settings />} />
+          </Route>
 
-          <Box className="welcome-section">
-            <Typography variant="h4" sx={{ fontWeight: 800 }}>
-              Your finances, simplified.
-            </Typography>
-            <Typography color="text.secondary" sx={{ fontWeight: 750, mt: 1 }}>
-              Understand your money and make your next move with confidence.
-            </Typography>
-          </Box>
-
-          <Box className="section-heading">
-            <Typography variant="h6" sx={{ fontWeight: 700 }}>
-              Monthly summary
-            </Typography>
-            <Typography variant="body2" color="text.secondary">
-              Sample figures · October 2026
-            </Typography>
-          </Box>
-
-          <Box className="summary-grid">
-            {summaryCards.map((item) => (
-              <SummaryCard
-                key={item.label}
-                label={item.label}
-                amount={formatCurrency(item.amount)}
-                icon={item.icon}
-                color={item.color}
-                note={item.note}
-              />
-            ))}
-          </Box>
-
-          <Box className="lower-grid">
-            <Card className="panel-card">
-              <CardContent>
-                <Typography variant="h6" sx={{ fontWeight: 700 }}>
-                  Savings snapshot
-                </Typography>
-                <Typography sx={{ color: "text.secondary", mt: 0.5 }}>
-                  How much of your income remains?
-                </Typography>
-
-                <Typography
-                  variant="h3"
-                  sx={{ fontWeight: 800, mt: 3 }}
-                >
-                  61.8%
-                </Typography>
-
-                <Typography
-                  variant="body2"
-                  sx={{ color: "#34d399", mt: 1 }}
-                >
-                  {formatCurrency(52500)} remaining
-                </Typography>
-
-                <Box className="progress-track">
-                  <Box className="progress-fill" />
-                </Box>
-
-                <Divider sx={{ my: 2.5, borderColor: "divider" }} />
-
-                <Box className="detail-row">
-                  <Typography color="text.secondary">
-                    Income
-                  </Typography>
-                  <Typography>{formatCurrency(85000)}</Typography>
-                </Box>
-                <Box className="detail-row">
-                  <Typography color="text.secondary">
-                    Expenses
-                  </Typography>
-                  <Typography>{formatCurrency(32500)}</Typography>
-                </Box>
-              </CardContent>
-            </Card>
-
-            <RecentActivity transactions={recentTransactions} />
-          </Box>
-
-          <Typography className="footer-note">
-            FinPilot · Personal finance workspace · All figures are illustrative
-          </Typography>
-        </Box>
+          <Route path="*" element={<Navigate to="/" replace />} />
+        </Routes>
       </Box>
     </ThemeProvider>
   );
