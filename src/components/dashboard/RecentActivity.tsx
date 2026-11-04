@@ -44,7 +44,7 @@ function RecentActivity({ transactions }: RecentActivityProps) {
           sx={{ color: "text.secondary", mt: 0.5 }}
           variant="body2"
         >
-          Example transactions
+          Latest transactions for this month
         </Typography>
 
         {transactions.map((transaction, index) => (

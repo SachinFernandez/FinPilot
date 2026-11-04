@@ -18,7 +18,7 @@ import AddIcon from "@mui/icons-material/Add";
 import { DataGrid, type GridColDef } from "@mui/x-data-grid";
 
 import type { Transaction, TransactionType } from "../types/transaction";
-import { sampleTransactions } from "../data/transactions";
+import { useTransactions } from "../context/TransactionContext";
 
 const getToday = () => {
     const today = new Date();
@@ -31,8 +31,7 @@ const getToday = () => {
 
 function Transactions() {
     // Transaction list
-    const [transactions, setTransactions] =
-        useState<Transaction[]>(sampleTransactions);
+    const { transactions, setTransactions } = useTransactions();
 
     // Search
     const [search, setSearch] = useState("");
@@ -255,21 +254,40 @@ function Transactions() {
             field: "amount",
             headerName: "Amount",
             flex: 1,
-            minWidth: 130,
+            minWidth: 160,
+            align: "right",
+            headerAlign: "right",
             renderCell: (params) => (
-                <Typography
-                    sx={{ fontWeight: 700 }}
-                    color={
-                        params.row.type === "INCOME" ? "success.main" : "error.main"
-                    }
+                <Box
+                    sx={{
+                        display: "flex",
+                        alignItems: "center",
+                        justifyContent: "flex-end",
+                        width: "100%",
+                        height: "100%",
+                        pr: 1,
+                    }}
                 >
-                    {params.row.type === "INCOME" ? "+" : "-"}
-                    {new Intl.NumberFormat("en-IN", {
-                        style: "currency",
-                        currency: "INR",
-                        maximumFractionDigits: 2,
-                    }).format(Number(params.value))}
-                </Typography>
+                    <Typography
+                        sx={{
+                            fontWeight: 700,
+                            whiteSpace: "nowrap",
+                            fontVariantNumeric: "tabular-nums",
+                        }}
+                        color={
+                            params.row.type === "INCOME"
+                                ? "success.main"
+                                : "error.main"
+                        }
+                    >
+                        {params.row.type === "INCOME" ? "+" : "-"}
+                        {new Intl.NumberFormat("en-IN", {
+                            style: "currency",
+                            currency: "INR",
+                            maximumFractionDigits: 2,
+                        }).format(Number(params.value))}
+                    </Typography>
+                </Box>
             ),
         },
         {
